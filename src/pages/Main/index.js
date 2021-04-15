@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { FaGithubAlt, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+import api from "../../service/api";
 
 import { Container, Form, SubmitButton, List } from "./styles";
 
-import api from "../../service/api";
 
 const override = css`
   display: block;
@@ -26,8 +28,10 @@ class Main extends Component {
     this.setState({ repos: JSON.parse(loadStorageRepos) });
   }
 
-  componentDidUpdate(prevProps) {
-
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.repos !== this.state.repos) {
+      localStorage.setItem('github_repositories', JSON.stringify(this.state.repos));
+    }
   }
 
   handleChange = e => {
@@ -49,7 +53,6 @@ class Main extends Component {
       };
 
       this.setState({ repos: [...this.state.repos, repo] });
-      localStorage.setItem('github_repositories', JSON.stringify(this.state.repos));
     } catch(e) {
       console.log(`Error fetching from repo ${this.state.repoName}: ${e}`);
     }
@@ -80,7 +83,10 @@ class Main extends Component {
         </Form>
 
         <List>
-          { this.state.repos.map(item => <li key={item.full_name}>{item.full_name}</li>) }
+          { this.state.repos.map(repository => (<li key={repository.full_name}>
+            <span>{repository.full_name}</span>
+            <Link to={`/repository/${encodeURIComponent(repository.full_name)}`}>Detalhes</Link>
+          </li>)) }
         </List>
       </Container>
     );
