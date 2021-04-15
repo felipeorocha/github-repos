@@ -34,16 +34,44 @@ export const Form = styled.form`
 	}
 `;
 
-export const SubmitButton = styled.button.attrs({
-	type: 'submit'
-})`
+export const SubmitButton = styled.button.attrs(props => ({
+	type: 'submit',
+	disabled: props.loading
+}))`
 	background: #7159c1;
 	border: 0;
 	padding: 0 15px;
+	max-width: 44px;
 	margin-left: 10px;
 	border-radius: 4px;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	&[disabled] {
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+`;
+
+export const List = styled.ul`
+	max-width: 700px;
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	margin: 80px auto;
+	list-style: none;
+
+	h1 {
+		font-size: 20px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		svg {
+			margin-right: 10px;
+		}
+	}
 `;
