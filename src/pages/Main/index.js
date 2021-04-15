@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 import api from "../../service/api";
 
-import { Container, Form, SubmitButton, List } from "./styles";
-
+import Container from "../../components/Container";
+import { Form, SubmitButton, List } from "./styles";
 
 const override = css`
   display: block;
@@ -16,6 +16,7 @@ const override = css`
   color: #fff;
   padding: 10px;
 `;
+
 class Main extends Component {
   state = {
     repos: [],
