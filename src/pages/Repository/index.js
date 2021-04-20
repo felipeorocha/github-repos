@@ -9,7 +9,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { FaArrowLeft } from "react-icons/fa";
 
 import Container from "../../components/Container";
-import { RepoOwner } from "./styles";
+import { RepoOwner, IssueList } from "./styles";
 
 const override = css`
   display: block;
@@ -44,8 +44,14 @@ class Repository extends Component {
 
   render() {
 
-    if (this.state.loading) {
-      return <ClipLoader css={override} size={20} color={"#fff"} loading={this.state.loading} speedMultiplier={1.5} />;
+    const {
+      loading,
+      repository,
+      issues
+    } = this.state;
+
+    if (loading) {
+      return <ClipLoader css={override} size={20} color={"#fff"} loading={loading} speedMultiplier={1.5} />;
     }
 
     return(
@@ -55,10 +61,25 @@ class Repository extends Component {
             <FaArrowLeft />
             Back to repos
           </Link>
-          <img src={this.state.repository.owner.avatar_url} alt={this.state.repository.owner.login} />
-          <h1>{this.state.repository.name}</h1>
-          <p>{this.state.repository.description}</p>
+          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
+          <h1>{repository.name}</h1>
+          <p>{repository.description}</p>
         </RepoOwner>
+
+        <IssueList>
+          {
+            issues.map(issue => (<li key={String(issue.id)}>
+              <img src={issue.user.avatar_url} alt={issue.user.login} />
+              <div>
+                <strong>
+                  <a href={issue.html_url}>{issue.title}</a>
+                  {issue.labels.map(label => (<span key={String(label.id)}>{label.name}</span>))}
+                </strong>
+                <p>{issue.user.login}</p>
+              </div>
+            </li>))
+          }
+        </IssueList>
       </Container>
     );
   }
