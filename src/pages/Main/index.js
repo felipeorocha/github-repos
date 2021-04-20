@@ -26,7 +26,10 @@ class Main extends Component {
 
   componentDidMount() {
     const loadStorageRepos = localStorage.getItem('github_repositories');
-    this.setState({ repos: JSON.parse(loadStorageRepos) });
+
+    if (loadStorageRepos) {
+      this.setState({ repos: JSON.parse(loadStorageRepos) });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -62,6 +65,12 @@ class Main extends Component {
   }
 
   render() {
+    const {
+      repos,
+      repoName,
+      loading
+    } = this.state;
+
     return(
       <Container>
         <h1>
@@ -74,17 +83,17 @@ class Main extends Component {
             type="text"
             placeholder="Repo name..."
             onChange={this.handleChange}
-            value={this.state.repoName}
+            value={repoName}
           />
-          <SubmitButton loading={this.state.loading}>
-              { this.state.loading ?
-                  <ClipLoader css={override} size={20} color={"#fff"} loading={this.state.loading} speedMultiplier={1.5} /> :
+          <SubmitButton loading={loading}>
+              { loading ?
+                  <ClipLoader css={override} size={20} color={"#fff"} loading={loading} speedMultiplier={1.5} /> :
                   <FaPlus color="#FFF" size={14} /> }
           </SubmitButton>
         </Form>
 
         <List>
-          { this.state.repos.map(repository => (<li key={repository.full_name}>
+          { repos.map(repository => (<li key={repository.full_name}>
             <span>{repository.full_name}</span>
             <Link to={`/repository/${encodeURIComponent(repository.full_name)}`}>Detalhes</Link>
           </li>)) }
