@@ -21,11 +21,13 @@ class Main extends Component {
   state = {
     repos: [],
     repoName: '',
-    loading: false
+    loading: false,
+    place: []
   };
 
   componentDidMount() {
     const loadStorageRepos = localStorage.getItem('github_repositories');
+    this.typingPlaceholder();
 
     if (loadStorageRepos) {
       this.setState({ repos: JSON.parse(loadStorageRepos) });
@@ -64,11 +66,24 @@ class Main extends Component {
     this.setState({ repoName: '', loading: false });
   }
 
+  typingPlaceholder = () => {
+    const placeholder = "Type a repo in here...";
+    let characterIndex = 0;
+
+    const type = () => {
+      if (characterIndex <= placeholder.length) {
+        this.setState({ place: placeholder.slice(0, characterIndex++) });
+      }
+    }
+    setInterval(type, 100);
+  }
+  
   render() {
     const {
       repos,
       repoName,
-      loading
+      loading,
+      place
     } = this.state;
 
     return(
@@ -81,7 +96,7 @@ class Main extends Component {
         <Form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            placeholder="Repo name..."
+            placeholder={place}
             onChange={this.handleChange}
             value={repoName}
           />
