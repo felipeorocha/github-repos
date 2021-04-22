@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Form = styled.form`
-	margin-top: 30px;
+	/* margin-top: 30px;
 	display: flex;
-	flex-direction: row;
+	flex-direction: row; */
 
 	input {
 		flex: 1;
@@ -11,6 +11,28 @@ export const Form = styled.form`
 		padding: 10px 15px;
 		border-radius: 4px;
 		font-size: 16px;
+	}
+
+	div {
+		margin-top: 30px;
+		display: flex;
+		flex-direction: row;
+	}
+
+	span {
+		/* display: inline-block; */
+		display: flex;
+    align-items: center;
+		margin-top: 10px;
+
+		svg {
+			margin-right: 5px;
+			color: #ffca00;
+		}
+	}
+
+	button > span {
+		margin: 0;
 	}
 `;
 

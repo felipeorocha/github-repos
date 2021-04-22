@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { FaGithubAlt, FaPlus } from "react-icons/fa";
+import { GoAlert } from "react-icons/go";
 import { Link } from "react-router-dom";
 
 import api from "../../service/api";
@@ -22,7 +23,8 @@ class Main extends Component {
     repos: [],
     repoName: '',
     loading: false,
-    place: []
+    place: [],
+    invalidRepoName: ''
   };
 
   componentDidMount() {
@@ -61,6 +63,8 @@ class Main extends Component {
       this.setState({ repos: [...this.state.repos, repo] });
     } catch(e) {
       console.log(`Error fetching from repo ${this.state.repoName}: ${e}`);
+      this.setState({ invalidRepoName: this.state.repoName });
+      setInterval(() => this.setState({ invalidRepoName: '' }), 6000);
     }
 
     this.setState({ repoName: '', loading: false });
@@ -77,13 +81,23 @@ class Main extends Component {
     }
     setInterval(type, 100);
   }
+
+  invalidRepoMessage = msg => {
+    return (
+      <span>
+        <GoAlert />
+        Cannot find&nbsp;&quot;<strong>{msg}</strong>&quot;&nbsp;repo.
+      </span>
+    );
+  }
   
   render() {
     const {
       repos,
       repoName,
       loading,
-      place
+      place,
+      invalidRepoName
     } = this.state;
 
     return(
@@ -94,17 +108,20 @@ class Main extends Component {
         </h1>
 
         <Form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder={place}
-            onChange={this.handleChange}
-            value={repoName}
-          />
-          <SubmitButton loading={loading}>
+          <div>
+            <input
+              type="text"
+              placeholder={place}
+              onChange={this.handleChange}
+              value={repoName}
+            />
+            <SubmitButton loading={loading}>
               { loading ?
                   <ClipLoader css={override} size={20} color={"#fff"} loading={loading} speedMultiplier={1.5} /> :
                   <FaPlus color="#FFF" size={14} /> }
-          </SubmitButton>
+            </SubmitButton>
+          </div>
+          { invalidRepoName && this.invalidRepoMessage(invalidRepoName) }
         </Form>
 
         <List>
