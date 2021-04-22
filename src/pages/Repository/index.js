@@ -15,7 +15,9 @@ const override = css`
   display: block;
   margin: 0 auto;
   color: #fff;
-  padding: 10px;
+  position: absolute;
+  left: calc(50% - 30px);
+  top: 50%;
 `;
 
 class Repository extends Component {
@@ -43,7 +45,6 @@ class Repository extends Component {
   }
 
   render() {
-
     const {
       loading,
       repository,
@@ -51,7 +52,7 @@ class Repository extends Component {
     } = this.state;
 
     if (loading) {
-      return <ClipLoader css={override} size={20} color={"#fff"} loading={loading} speedMultiplier={1.5} />;
+      return <ClipLoader css={override} size={80} color={"#fff"} loading={loading} speedMultiplier={1.5} />;
     }
 
     return(
